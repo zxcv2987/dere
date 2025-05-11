@@ -6,4 +6,4 @@
 
 ## 배포 링크
 
-[페이지로 이동](dere-devrecord.vercel.app)
+[페이지로 이동](https://dere-devrecord.vercel.app)
