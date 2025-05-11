@@ -1,0 +1,143 @@
+---
+title: "GraphQL vs REST: API 선택의 갈림길"
+date: "2023-11-05"
+category: "backend"
+tags: ["graphql", "rest", "api", "backend"]
+slug: "graphql-rest-api"
+description: "REST API와 GraphQL의 차이점, 장단점을 비교하고 각 상황에 맞는 API 설계 방식을 선택하는 방법을 알아봅니다."
+---
+
+# GraphQL vs REST: API 선택의 갈림길
+
+API를 설계할 때 가장 먼저 마주치는 선택지 중 하나는 REST와 GraphQL 중 어떤 접근 방식을 사용할 것인가 하는 문제입니다. 두 방식 모두 장단점이 있으므로, 프로젝트 요구사항에 맞는 선택이 중요합니다.
+
+## REST API
+
+REST(Representational State Transfer)는 자원을 URI로 표현하고 HTTP 메서드(GET, POST, PUT, DELETE 등)를 사용하여 자원을 조작하는 아키텍처 스타일입니다.
+
+### REST API 예시
+
+```http
+GET /api/users/123
+GET /api/users/123/posts
+POST /api/posts
+```
+
+### REST의 장점
+
+- 이해하기 쉽고 구현이 간단함
+- HTTP 캐싱 메커니즘 활용 가능
+- 널리 사용되어 많은 라이브러리와 도구 지원
+- 상태를 유지하지 않는(Stateless) 설계로 확장성이 좋음
+
+### REST의 단점
+
+- 오버페칭(Over-fetching): 필요 이상의 데이터를 받게 될 수 있음
+- 언더페칭(Under-fetching): 필요한 데이터를 위해 여러 요청이 필요할 수 있음
+- 엔드포인트 관리가 복잡해질 수 있음
+
+## GraphQL
+
+GraphQL은 페이스북에서 개발한 쿼리 언어로, 클라이언트가 필요한 데이터를 정확히 요청할 수 있게 해줍니다.
+
+### GraphQL 쿼리 예시
+
+```graphql
+query {
+  user(id: "123") {
+    name
+    email
+    posts {
+      title
+      content
+    }
+  }
+}
+```
+
+### GraphQL의 장점
+
+- 필요한 데이터만 정확히 요청 가능
+- 단일 요청으로 다양한 자원 조회 가능
+- 강력한 타입 시스템과 자동 문서화
+- 버전 관리의 유연성
+
+### GraphQL의 단점
+
+- 구현이 상대적으로 복잡함
+- 캐싱 구현이 더 어려움
+- 파일 업로드와 같은 특정 작업에 추가 설정 필요
+- 러닝 커브가 있음
+
+## 실제 구현 비교
+
+### REST API 예시 (Express)
+
+```javascript
+// 사용자 정보 조회
+app.get("/api/users/:id", (req, res) => {
+  const user = getUserById(req.params.id);
+  res.json(user);
+});
+
+// 사용자의 게시물 조회
+app.get("/api/users/:id/posts", (req, res) => {
+  const posts = getPostsByUserId(req.params.id);
+  res.json(posts);
+});
+```
+
+### GraphQL 예시 (Apollo Server)
+
+```javascript
+const typeDefs = gql`
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    posts: [Post!]!
+  }
+
+  type Post {
+    id: ID!
+    title: String!
+    content: String!
+    author: User!
+  }
+
+  type Query {
+    user(id: ID!): User
+    posts: [Post!]!
+  }
+`;
+
+const resolvers = {
+  Query: {
+    user: (_, { id }) => getUserById(id),
+    posts: () => getAllPosts(),
+  },
+  User: {
+    posts: (user) => getPostsByUserId(user.id),
+  },
+};
+```
+
+## 언제 무엇을 선택해야 할까?
+
+### REST를 선택하는 경우
+
+- 간단한 CRUD 기능이 필요한 경우
+- 공개 API를 제공하는 경우
+- HTTP 캐싱이 중요한 경우
+- 팀이 REST에 익숙한 경우
+
+### GraphQL을 선택하는 경우
+
+- 복잡한 데이터 요구사항이 있는 경우
+- 다양한 클라이언트(웹, 모바일)를 지원해야 하는 경우
+- 네트워크 성능이 중요한 경우
+- 클라이언트가 필요한 데이터를 정확히 지정해야 하는 경우
+
+## 마무리
+
+REST와 GraphQL은 서로 경쟁하는 개념이 아니라 각기 다른 상황에 적합한 도구입니다. 프로젝트 요구사항, 팀 경험, 확장성 요구 등을 고려하여 선택하는 것이 중요합니다. 또한 두 접근 방식을 함께 사용하는 하이브리드 방식도 가능합니다.

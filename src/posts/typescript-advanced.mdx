@@ -1,0 +1,107 @@
+---
+title: "TypeScript 고급 기능: 타입 마법사 되기"
+date: "2024-01-17"
+category: "programming"
+tags: ["typescript", "javascript", "web", "frontend"]
+slug: "typescript-advanced"
+description: "TypeScript의 제네릭, 조건부 타입, 유틸리티 타입 등 고급 타입 시스템을 마스터하고 더 안전하고 유지보수하기 쉬운 코드를 작성하는 방법을 소개합니다."
+---
+
+# TypeScript 고급 기능: 타입 마법사 되기
+
+TypeScript는 JavaScript에 정적 타입 체킹을 추가한 슈퍼셋 언어로, 더 안전하고 유지보수하기 쉬운 코드를 작성할 수 있게 해줍니다. 이번 포스트에서는 TypeScript의 고급 타입 기능에 대해 알아보겠습니다.
+
+## 제네릭 (Generics)
+
+제네릭은 타입을 파라미터화하여 재사용 가능한 컴포넌트를 만들 수 있게 해줍니다.
+
+```typescript
+// 기본 제네릭 함수
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+// 사용 예시
+const num = identity<number>(42); // num: number
+const str = identity<string>("Hello"); // str: string
+```
+
+## 고급 타입
+
+### 유니온 타입과 인터섹션 타입
+
+```typescript
+// 유니온 타입 (Union Types)
+type ID = string | number;
+
+// 인터섹션 타입 (Intersection Types)
+interface Person {
+  name: string;
+  age: number;
+}
+
+interface Employee {
+  companyId: string;
+  role: string;
+}
+
+type EmployeePerson = Person & Employee;
+```
+
+### 조건부 타입 (Conditional Types)
+
+```typescript
+type IsString<T> = T extends string ? true : false;
+
+// 사용 예시
+type A = IsString<string>; // true
+type B = IsString<number>; // false
+```
+
+## 유틸리티 타입
+
+TypeScript는 공통 타입 변환을 수행하는 내장 유틸리티 타입을 제공합니다.
+
+### Partial과 Required
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+// 모든 속성을 선택적으로 만들기
+type PartialUser = Partial<User>; // { id?: number; name?: string; email?: string; }
+
+// 모든 속성을 필수로 만들기
+type RequiredUser = Required<PartialUser>; // { id: number; name: string; email: string; }
+```
+
+### Pick과 Omit
+
+```typescript
+// 특정 속성만 선택하기
+type UserBasicInfo = Pick<User, "id" | "name">; // { id: number; name: string; }
+
+// 특정 속성 제외하기
+type UserWithoutEmail = Omit<User, "email">; // { id: number; name: string; }
+```
+
+## 타입 추론 개선하기
+
+TypeScript의 타입 추론 능력을 최대한 활용하는 방법을 알아봅시다.
+
+```typescript
+// 함수 반환 타입 추론
+function createPair<S, T>(v1: S, v2: T): [S, T] {
+  return [v1, v2];
+}
+
+// TypeScript가 자동으로 [string, number] 타입을 추론
+const pair = createPair("hello", 42);
+```
+
+## 마무리
+
+TypeScript의 고급 타입 시스템을 마스터하면 더 안전하고 표현력 있는 코드를 작성할 수 있습니다. 다음 포스트에서는 TypeScript와 React를 함께 사용하는 최적의 방법에 대해 알아보겠습니다.
