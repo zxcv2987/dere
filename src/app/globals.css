@@ -33,8 +33,7 @@ code[data-line-numbers] > [data-line]::before {
 }
 
 /* 코드 블록 스타일 */
-code[data-theme*=" "],
-code[data-theme*=" "] span {
+code[data-theme] span {
   color: var(--shiki-dark);
 }
 
