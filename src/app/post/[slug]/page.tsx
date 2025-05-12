@@ -1,13 +1,6 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getAllFrontMatter, getPostBySlug } from "@/utils/post";
 import { format } from "date-fns";
-import { useMDXComponents } from "@/mdx-component";
-
-// MDX 컨텐츠를 위한 래퍼 컴포넌트
-function MDXContent({ content }: { content: string }) {
-  const components = useMDXComponents({});
-  return <MDXRemote source={content} components={components} />;
-}
 
 export async function generateStaticParams() {
   return getAllFrontMatter().map((post) => ({
@@ -29,14 +22,12 @@ export default async function Page({
         <span className="text-zinc-500 text-sm">
           {format(new Date(data.date), "yyyy년 MM월 dd일")}
         </span>
-        <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-          {data.title}
-        </h1>
+        <h1 className="text-5xl font-bold leading-tight mb-0">{data.title}</h1>
         <span className="text-zinc-500 text-sm">{data.category}</span>
       </section>
       <section className="w-full overflow-hidden">
         <div className="prose-container w-full max-w-full overflow-x-auto py-4">
-          <MDXContent content={content} />
+          <MDXRemote source={content} />
         </div>
       </section>
     </article>
