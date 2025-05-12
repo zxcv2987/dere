@@ -9,7 +9,7 @@ export default function ListLayout({
   const categories = getAllCategories();
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 w-full justify-center items-start">
+    <div className="flex flex-col md:flex-row gap-4 w-full justify-center items-start min-h-[50vh]">
       <div className="md:sticky md:top-24 md:w-2xs">
         <Category categories={categories} />
       </div>

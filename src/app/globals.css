@@ -1,1 +1,56 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* 코드 블록 기본 스타일 */
+pre {
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+
+pre [data-line] {
+  padding: 0 1rem;
+}
+
+/* 라인 하이라이트 */
+[data-highlighted-line] {
+  background-color: rgba(71, 76, 110, 0.4);
+  border-left: 2px solid #7aa2f7;
+}
+
+/* 라인 번호 */
+code[data-line-numbers] {
+  counter-reset: line;
+}
+
+code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: gray;
+}
+
+/* 코드 블록 스타일 */
+code[data-theme] span {
+  color: var(--shiki-dark);
+}
+
+/* 코드 블록 제목 스타일 */
+[data-rehype-pretty-code-title] {
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  color: var(--color-zinc-200);
+  background-color: var(--tw-prose-pre-bg);
+  border-bottom-color: var(--color-zinc-200);
+  border-bottom-width: 1px;
+}
+
+/* 코드 블록 제목이 있을 경우 코드 블록 상단 모서리 스타일 조정 */
+[data-rehype-pretty-code-title] + pre {
+  margin-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
