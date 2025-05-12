@@ -23,10 +23,8 @@ export default function RootLayout({
     <html lang="ko" className={notoSansKr.className}>
       <body>
         <Header />
-        <main className="min-h-screen ">
-          <div className="pt-16 pb-32 px-4 md:max-w-6xl mx-auto">
-            {children}
-          </div>
+        <main className="pt-16 pb-32 px-4 md:max-w-7xl mx-auto min-h-screen">
+          {children}
         </main>
         <Footer />
       </body>
